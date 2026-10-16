@@ -56,8 +56,8 @@ export function mapDmProduct(p: DmProduct): RawProduct | null {
   }
 }
 
-async function query(from: number, to: number, pageSize: number): Promise<DmResponse> {
-  const url = `${BASE}?pageSize=${pageSize}&currentPage=0&type=search-static&sort=price_asc&price.value.from=${from.toFixed(2)}&price.value.to=${to.toFixed(2)}`
+async function query(from: number, to: number, pageSize: number, sort: 'price_asc' | 'price_desc' = 'price_asc'): Promise<DmResponse> {
+  const url = `${BASE}?pageSize=${pageSize}&currentPage=0&type=search-static&sort=${sort}&price.value.from=${from.toFixed(2)}&price.value.to=${to.toFixed(2)}`
   return getJson<DmResponse>(url, { skipRobots: true, timeoutMs: 90_000 })
 }
 
@@ -66,12 +66,21 @@ async function collect(from: number, to: number, out: Map<string, RawProduct>, l
   const probe = await query(from, to, 1)
   if (probe.count === 0) return
   if (probe.count <= MAX_PER_QUERY || to - from < 0.02) {
-    const res = await query(from, to, MAX_PER_QUERY)
-    for (const p of res.products) {
-      const mapped = mapDmProduct(p)
-      if (mapped) out.set(mapped.id, mapped)
+    const add = (res: DmResponse) => {
+      for (const p of res.products) {
+        const mapped = mapDmProduct(p)
+        if (mapped) out.set(mapped.id, mapped)
+      }
     }
-    log(`dm: ${from.toFixed(2)}–${to.toFixed(2)} € → ${res.products.length} (gesamt ${out.size})`)
+    const before = out.size
+    add(await query(from, to, MAX_PER_QUERY))
+    if (probe.count > MAX_PER_QUERY) {
+      // Mehr als 1000 Produkte zum selben Preis: zusätzlich absteigend sortiert holen.
+      add(await query(from, to, MAX_PER_QUERY, 'price_desc'))
+      const got = out.size - before
+      if (got < probe.count) log(`dm: WARNUNG – bei ${from.toFixed(2)} € nur ${got} von ${probe.count} Produkten abrufbar`)
+    }
+    log(`dm: ${from.toFixed(2)}–${to.toFixed(2)} € → ${out.size - before} (gesamt ${out.size})`)
     return
   }
   const mid = Math.floor(((from + to) / 2) * 100) / 100

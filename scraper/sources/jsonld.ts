@@ -17,7 +17,7 @@ interface LdProduct {
   '@type'?: string
   name?: string
   url?: string
-  sku?: string
+  sku?: string | number
   brand?: string | { name?: string }
   category?: string
   image?: string | string[]
@@ -30,7 +30,7 @@ export function decodeEntities(s: string): string {
   return s.replace(/&(#x?[0-9a-f]+|[a-z]+);/gi, (m, code: string) => {
     if (code[0] === '#') {
       const n = code[1] === 'x' || code[1] === 'X' ? parseInt(code.slice(2), 16) : parseInt(code.slice(1), 10)
-      return Number.isFinite(n) ? String.fromCodePoint(n) : m
+      return Number.isFinite(n) && n >= 0 && n <= 0x10ffff ? String.fromCodePoint(n) : m
     }
     return ENTITIES[code.toLowerCase()] ?? m
   })
@@ -68,7 +68,7 @@ export function mapLdProduct(p: LdProduct, base: string, idFromUrl: (url: string
   const q = parseQuantity(name)
   const brand = typeof p.brand === 'string' ? p.brand : (p.brand?.name ?? '')
   return {
-    id: p.sku ?? idFromUrl(url),
+    id: p.sku !== undefined && p.sku !== null && String(p.sku).trim() ? String(p.sku).trim() : idFromUrl(url),
     name,
     brand: decodeEntities(brand),
     category: decodeEntities(p.category ?? '').split(/[>|/]/)[0].trim(),

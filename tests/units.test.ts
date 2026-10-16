@@ -5,8 +5,9 @@ describe('toNumber', () => {
   it('liest deutsche und englische Schreibweise', () => {
     expect(toNumber('1,5')).toBe(1.5)
     expect(toNumber('1.5')).toBe(1.5)
-    expect(toNumber('1.000')).toBe(1000)
+    expect(toNumber('1.599')).toBe(1.599) // Spritpreis mit Punkt
     expect(toNumber('1.234,56')).toBe(1234.56)
+    expect(toNumber('1.234.567')).toBe(1234567)
   })
 })
 

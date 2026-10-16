@@ -67,7 +67,7 @@ export async function evaluateRule(rule: AlertRule, d: AlertData, siteUrl = ''):
         value: price,
         title: `${item[1]} um ${eur(price)} €`,
         message: `${storeName(rule.store)}${item[9] ? ` · ${item[9]}` : ''} – unter deiner Schwelle von ${eur(rule.below)} €.`,
-        click: file ? file.urlPrefix + item[10] : undefined,
+        click: file && item[10] ? (item[10].startsWith('http') ? item[10] : file.urlPrefix + item[10]) : undefined,
       }
     }
     case 'spot': {

@@ -15,8 +15,8 @@ import { useBasket } from './basketState'
 const ALL = TRACKED_STORES.map((s) => s.id)
 
 export default function ProductDetail() {
-  const { store, id } = useParams() as { store: StoreId; id: string }
-  const productId = decodeURIComponent(id)
+  // useParams liefert bereits dekodierte Werte
+  const { store, id: productId } = useParams() as { store: StoreId; id: string }
   const own = useProducts(useMemo(() => [store], [store]))
   const product = own.products.find((p) => p.id === productId)
   const [history, setHistory] = useState<PricePoint[] | null>(null)

@@ -3,10 +3,14 @@ import { useCallback, useEffect, useState } from 'react'
 const PREFIX = 'gspart.'
 
 /**
- * localStorage kann fehlen oder werfen (privates Fenster, gesperrte
- * Website-Daten). Dann läuft die Seite einfach ohne Speicherung weiter.
+ * Zuletzt geschriebene Werte im Arbeitsspeicher. localStorage kann fehlen oder
+ * werfen (privates Fenster, gesperrte Website-Daten) – dann arbeitet die Seite
+ * mit diesen Werten weiter, bis sie neu geladen wird.
  */
+const memory = new Map<string, unknown>()
+
 export function readStored<T>(key: string, fallback: T): T {
+  if (memory.has(key)) return memory.get(key) as T
   try {
     const raw = window.localStorage.getItem(PREFIX + key)
     return raw === null ? fallback : (JSON.parse(raw) as T)
@@ -16,6 +20,7 @@ export function readStored<T>(key: string, fallback: T): T {
 }
 
 export function writeStored<T>(key: string, value: T): void {
+  memory.set(key, value)
   try {
     window.localStorage.setItem(PREFIX + key, JSON.stringify(value))
   } catch {
@@ -35,7 +40,11 @@ export function useStoredState<T>(key: string, fallback: T): [T, (next: T | ((pr
     set.add(fn)
     listeners.set(key, set)
     const onStorage = (e: StorageEvent) => {
-      if (e.key === PREFIX + key) setValue(readStored(key, fallback))
+      // Änderung aus einem anderen Tab: Arbeitsspeicher-Stand verwerfen
+      if (e.key === PREFIX + key) {
+        memory.delete(key)
+        setValue(readStored(key, fallback))
+      }
     }
     window.addEventListener('storage', onStorage)
     return () => {

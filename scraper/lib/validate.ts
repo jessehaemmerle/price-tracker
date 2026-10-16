@@ -56,15 +56,16 @@ export function validateProducts(
       drop('ungültiger Preis')
       continue
     }
-    if (seen.has(p.id)) {
+    const id = p.id.trim()
+    if (seen.has(id)) {
       duplicates++
       continue
     }
-    seen.add(p.id)
+    seen.add(id)
     const regular = p.regularPrice && p.regularPrice > p.price && p.regularPrice < MAX_PRICE_CENTS ? p.regularPrice : 0
     items.push({
       ...p,
-      id: p.id.trim(),
+      id,
       name: p.name.replace(/\s+/g, ' ').trim(),
       brand: p.brand?.replace(/\s+/g, ' ').trim() ?? '',
       regularPrice: regular,

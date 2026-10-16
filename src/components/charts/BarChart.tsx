@@ -32,14 +32,14 @@ const M = { top: 22, right: 8, bottom: 28, left: 44 }
 export function BarChart({ bars, title, yFormat, height = 220, divider }: Props) {
   const [ref, width] = useSize<HTMLDivElement>()
   const [active, setActive] = useState<number | null>(null)
-  if (!bars.length) return null
-  const values = bars.map((b) => b.value)
+  // Kein frühes "return null": der Rahmen muss existieren, damit useSize die Breite misst.
+  const values = bars.length ? bars.map((b) => b.value) : [0]
   const yt = niceTicks(Math.min(0, ...values), Math.max(...values), 4)
   const y0 = Math.min(0, yt[0] ?? 0)
   const y1 = Math.max(yt[yt.length - 1] ?? 1, ...values)
   const innerW = Math.max(0, width - M.left - M.right)
   const innerH = height - M.top - M.bottom
-  const band = innerW / bars.length
+  const band = innerW / Math.max(1, bars.length)
   const barW = Math.max(2, Math.min(24, band - 2))
   const sy = (v: number) => M.top + (1 - (v - y0) / (y1 - y0 || 1)) * innerH
   const zero = sy(0)
@@ -89,7 +89,7 @@ export function BarChart({ bars, title, yFormat, height = 220, divider }: Props)
   return (
     <figure className="chart">
       <div ref={ref} className="chart__frame" style={{ height }} onPointerLeave={() => setActive(null)}>
-        {width > 0 && (
+        {width > 0 && bars.length > 0 && (
           <svg width={width} height={height} role="img" aria-label={title} tabIndex={0} onKeyDown={onKey} onBlur={() => setActive(null)}>
             <g className="chart__grid">
               {yt.map((v) => (

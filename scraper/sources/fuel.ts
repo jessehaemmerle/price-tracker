@@ -217,7 +217,8 @@ export function pruneFuelHistory(h: FuelHistoryFile, nowTs: number): void {
       const s = entry[f]
       if (!s) continue
       const first = s.findIndex((p) => p[0] >= stationCutoff)
-      if (first > 1) entry[f] = s.slice(first - 1)
+      if (first === -1) entry[f] = s.slice(-1)
+      else if (first > 1) entry[f] = s.slice(first - 1)
     }
   }
 }

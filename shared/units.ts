@@ -54,10 +54,14 @@ const SINGLE_RE = new RegExp(`(\\d+(?:[.,]\\d+)?)\\s*(${UNIT_PATTERN})(?![a-zä�
 const UNIT_PRICE_RE = /(\d+(?:[.,]\d+)?)\s*€\s*(?:je|\/|pro)\s*(\d+(?:[.,]\d+)?)?\s*([a-zA-Zäöü²]+)/
 const BIPA_UNIT_PRICE_RE = /^(\d+(?:[.,]\d+)?)\s*([a-zA-Zäöü²]+)\s+(\d+(?:[.,]\d+)?)$/
 
-/** Deutsche oder englische Dezimalschreibweise lesen ("1,5", "1.5", "1.000"). */
+/**
+ * Deutsche oder englische Dezimalschreibweise lesen ("1,5", "1.5", "1.234,50").
+ * Ein Punkt gilt nur dann als Tausendertrenner, wenn es eindeutig ist (danach
+ * folgt ein Dezimalkomma oder es gibt mehrere Dreiergruppen) – "1.599" ist 1,599.
+ */
 export function toNumber(s: string): number {
   let v = s.trim()
-  if (/^\d{1,3}(\.\d{3})+(,\d+)?$/.test(v)) v = v.replace(/\./g, '')
+  if (/^\d{1,3}(\.\d{3})+,\d+$/.test(v) || /^\d{1,3}(\.\d{3}){2,}$/.test(v)) v = v.replace(/\./g, '')
   return Number.parseFloat(v.replace(',', '.'))
 }
 

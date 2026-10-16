@@ -123,7 +123,8 @@ export function pruneHistory(buckets: ShopHistoryBucket[], today: DayNumber, kee
   for (const bucket of buckets) {
     for (const [id, points] of Object.entries(bucket)) {
       const firstKept = points.findIndex((p) => p[0] >= cutoff)
-      if (firstKept > 1) bucket[id] = points.slice(firstKept - 1)
+      if (firstKept === -1) bucket[id] = points.slice(-1)
+      else if (firstKept > 1) bucket[id] = points.slice(firstKept - 1)
     }
   }
 }
