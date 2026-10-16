@@ -1,0 +1,114 @@
+name: Daten aktualisieren
+
+# Holt Preise und legt sie im Branch "data" ab. Danach baut "Seite veröffentlichen"
+# die Website mit den neuen Daten neu.
+on:
+  schedule:
+    - cron: '7 * * * *' # stündlich: Spritpreise + Push-Alarme
+    - cron: '23 1,7,13,15,19 * * *' # Energie (Börsenstrom für morgen erscheint gegen 13 Uhr)
+    - cron: '41 2 * * *' # täglich nachts: Händlersortimente
+  workflow_dispatch:
+    inputs:
+      task:
+        description: 'Was aktualisieren?'
+        type: choice
+        options: [fuel, energy, shops, all]
+        default: fuel
+      only:
+        description: 'Nur diese Händler, z. B. spar,dm (leer = alle)'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+# Alle Läufe schreiben in denselben Branch – darum nacheinander.
+concurrency:
+  group: data-branch
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Aufgabe bestimmen
+        id: task
+        env:
+          SCHEDULE: ${{ github.event.schedule }}
+          INPUT_TASK: ${{ inputs.task }}
+          INPUT_ONLY: ${{ inputs.only }}
+        run: |
+          case "$SCHEDULE" in
+            '7 * * * *') task=fuel ;;
+            '23 1,7,13,15,19 * * *') task=energy ;;
+            '41 2 * * *') task=shops ;;
+            *) task="$INPUT_TASK" ;;
+          esac
+          case "$task" in fuel|energy|shops|all) ;; *) task=fuel ;; esac
+          # Nur Kleinbuchstaben und Kommas zulassen (Händler-IDs)
+          only=""
+          if [[ "$INPUT_ONLY" =~ ^[a-z,]+$ ]]; then only="$INPUT_ONLY"; fi
+          echo "task=$task" >> "$GITHUB_OUTPUT"
+          echo "only=$only" >> "$GITHUB_OUTPUT"
+          echo "Aufgabe: $task ${only:+(nur $only)}"
+
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Daten-Branch auschecken (oder neu anlegen)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          url="https://x-access-token:${GH_TOKEN}@github.com/${REPO}.git"
+          if git ls-remote --exit-code --heads "$url" data >/dev/null 2>&1; then
+            git clone --depth 1 --branch data --single-branch "$url" data
+          else
+            mkdir data
+            git -C data init -b data
+            git -C data remote add origin "$url"
+            printf '# Daten von Gspart! Vorarlberg\n\nAutomatisch erzeugt von der Action "Daten aktualisieren". Nicht von Hand bearbeiten.\n' > data/README.md
+          fi
+
+      - name: Preise holen
+        env:
+          TASK: ${{ steps.task.outputs.task }}
+          ONLY: ${{ steps.task.outputs.only }}
+        run: npx tsx scraper/run.ts "$TASK" ${ONLY:+--only="$ONLY"} --data=data
+
+      - name: Push-Alarme prüfen
+        if: always()
+        env:
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+          NTFY_SERVER: ${{ vars.NTFY_SERVER }}
+          NTFY_TOKEN: ${{ secrets.NTFY_TOKEN }}
+        run: npx tsx scraper/run.ts alerts --data=data
+
+      - name: Daten speichern
+        if: always()
+        env:
+          TASK: ${{ steps.task.outputs.task }}
+        run: |
+          cd data
+          git config user.name "gspart-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Keine Änderungen."
+            exit 0
+          fi
+          git commit -q -m "Daten: $TASK $(date -u +'%Y-%m-%d %H:%M') UTC"
+          for i in 1 2 3 4; do
+            git push origin data && exit 0
+            echo "Push fehlgeschlagen, neuer Versuch in $((i * 5)) s"
+            sleep $((i * 5))
+            git pull --rebase origin data || true
+          done
+          exit 1

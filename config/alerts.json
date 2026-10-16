@@ -1,0 +1,9 @@
+{
+  "siteUrl": "https://jessehaemmerle.github.io/price-tracker/",
+  "rules": [
+    { "id": "diesel-vorarlberg", "type": "fuel", "fuel": "DIE", "below": 1.55 },
+    { "id": "super-dornbirn", "type": "fuel", "fuel": "SUP", "below": 1.6, "districts": ["Dornbirn"] },
+    { "id": "boersenstrom-billig", "type": "spot", "belowCt": 3 },
+    { "id": "heizoel", "type": "heatingoil", "below": 95 }
+  ]
+}

@@ -1,0 +1,181 @@
+/*
+ * Gspart! Vorarlberg – Design-Tokens
+ *
+ * Gletscherweiß und Granit als Grundton, Montfort-Rot (Landesfarbe) als
+ * einziger Akzent der Oberfläche. Datenfarben stammen aus der validierten
+ * Dataviz-Palette (Blau/Orange/Aqua für Diesel/Super/CNG, Blau-Rampe für
+ * Größen) und tragen nie Text.
+ */
+:root {
+  color-scheme: light;
+
+  --snow: #f6f8f9;
+  --paper: #ffffff;
+  --granite: #1e262c;
+  --slate: #56626b;
+  --muted: #68737b;
+  --mist: #dce3e7;
+  --mist-strong: #c4ced4;
+  --wash: #edf1f3;
+  --montfort: #c8102e;
+  --montfort-ink: #a90d26;
+  --montfort-wash: #fbe9ec;
+  --on-accent: #ffffff;
+  --focus: #0f6e8c;
+
+  /* Gelände der Kopfgrafik */
+  --ridge-far: #e3e9ed;
+  --ridge-near: #cfd9df;
+  --ridge-line: #1e262c;
+
+  /* Datenfarben (validiert für helle Fläche #ffffff, alle Paare) */
+  --series-die: #2a78d6;
+  --series-sup: #eb6834;
+  --series-gas: #1baf7a;
+  --seq-250: #86b6ef;
+  --seq-350: #5598e7;
+  --seq-450: #2a78d6;
+  --seq-550: #1c5cab;
+  --seq-650: #104281;
+  --grid: #e6ebee;
+  --axis: #c4ced4;
+
+  /* Karten-Preisschilder: Stufe 0 = teuer … 4 = günstig, Textfarbe je Stufe ≥ 4,5:1 */
+  --pin-0: #86b6ef;
+  --pin-1: #5598e7;
+  --pin-2: #256abf;
+  --pin-3: #1c5cab;
+  --pin-4: #104281;
+  --pin-ink-0: #1e262c;
+  --pin-ink-1: #1e262c;
+  --pin-ink-2: #ffffff;
+  --pin-ink-3: #ffffff;
+  --pin-ink-4: #ffffff;
+
+  /* Status – nie ohne Symbol und Text */
+  --good: #0ca30c;
+  --good-ink: #006300;
+  --bad-ink: #b42727;
+  --warning: #fab219;
+
+  --font-sans: 'Sofia Sans Variable', 'Sofia Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-cond: 'Sofia Sans Condensed Variable', 'Sofia Sans Condensed', 'Arial Narrow', system-ui, sans-serif;
+
+  /* Typografische Skala (klassisch: 12 · 14 · 16 · 18 · 21 · 24 · 36 · 48 · 72) */
+  --step--2: 0.75rem;
+  --step--1: 0.875rem;
+  --step-0: 1rem;
+  --step-1: 1.125rem;
+  --step-2: 1.3125rem;
+  --step-3: 1.5rem;
+  --step-4: 2.25rem;
+  --step-5: 3rem;
+  --step-6: 4.5rem;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  --radius-control: 6px;
+  --radius-panel: 10px;
+  --page-max: 1200px;
+  --gutter: 16px;
+  --nav-height: 64px;
+}
+
+@media (min-width: 720px) {
+  :root {
+    --gutter: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+    --snow: #0e1418;
+    --paper: #151d23;
+    --granite: #e7ecef;
+    --slate: #a4b0b8;
+    --muted: #87939b;
+    --mist: #26323a;
+    --mist-strong: #34434d;
+    --wash: #1b252c;
+    --montfort: #f2545b;
+    --montfort-ink: #ff7a80;
+    --montfort-wash: #3a1d22;
+    --on-accent: #12080a;
+    --focus: #4cb3d4;
+    --ridge-far: #1a252c;
+    --ridge-near: #223039;
+    --ridge-line: #e7ecef;
+    --series-die: #3987e5;
+    --series-sup: #d95926;
+    --series-gas: #199e70;
+    --seq-250: #184f95;
+    --seq-350: #1c5cab;
+    --seq-450: #2a78d6;
+    --seq-550: #5598e7;
+    --seq-650: #9ec5f4;
+    --grid: #222d34;
+    --axis: #34434d;
+    --good-ink: #2fc22f;
+    --bad-ink: #ff7b7b;
+    --pin-0: #184f95;
+    --pin-1: #1c5cab;
+    --pin-2: #256abf;
+    --pin-3: #5598e7;
+    --pin-4: #9ec5f4;
+    --pin-ink-0: #ffffff;
+    --pin-ink-1: #ffffff;
+    --pin-ink-2: #ffffff;
+    --pin-ink-3: #0e1418;
+    --pin-ink-4: #0e1418;
+  }
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --snow: #0e1418;
+  --paper: #151d23;
+  --granite: #e7ecef;
+  --slate: #a4b0b8;
+  --muted: #87939b;
+  --mist: #26323a;
+  --mist-strong: #34434d;
+  --wash: #1b252c;
+  --montfort: #f2545b;
+  --montfort-ink: #ff7a80;
+  --montfort-wash: #3a1d22;
+  --on-accent: #12080a;
+  --focus: #4cb3d4;
+  --ridge-far: #1a252c;
+  --ridge-near: #223039;
+  --ridge-line: #e7ecef;
+  --series-die: #3987e5;
+  --series-sup: #d95926;
+  --series-gas: #199e70;
+  --seq-250: #184f95;
+  --seq-350: #1c5cab;
+  --seq-450: #2a78d6;
+  --seq-550: #5598e7;
+  --seq-650: #9ec5f4;
+  --grid: #222d34;
+  --axis: #34434d;
+  --good-ink: #2fc22f;
+  --bad-ink: #ff7b7b;
+  --pin-0: #184f95;
+  --pin-1: #1c5cab;
+  --pin-2: #256abf;
+  --pin-3: #5598e7;
+  --pin-4: #9ec5f4;
+  --pin-ink-0: #ffffff;
+  --pin-ink-1: #ffffff;
+  --pin-ink-2: #ffffff;
+  --pin-ink-3: #0e1418;
+  --pin-ink-4: #0e1418;
+}
