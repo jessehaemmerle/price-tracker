@@ -1,0 +1,48 @@
+{
+  "name": "gspart-vorarlberg",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Gspart! Vorarlberg – Preistracker für Sprit, Supermärkte, Drogerien, Baumarkt und Energie in Vorarlberg",
+  "license": "GPL-3.0-only",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc -b",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "scrape": "tsx scraper/run.ts",
+    "scrape:fuel": "tsx scraper/run.ts fuel",
+    "scrape:shops": "tsx scraper/run.ts shops",
+    "scrape:energy": "tsx scraper/run.ts energy",
+    "alerts": "tsx scraper/run.ts alerts"
+  },
+  "dependencies": {
+    "@fontsource-variable/sofia-sans": "^5.3.0",
+    "@fontsource-variable/sofia-sans-condensed": "^5.3.0",
+    "leaflet": "^1.9.4",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "react-leaflet": "^5.0.0",
+    "react-router": "^7.18.4"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "@playwright/test": "1.56.1",
+    "@types/leaflet": "^1.9.22",
+    "@types/node": "^22.20.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "cheerio": "^1.2.0",
+    "fflate": "^0.8.3",
+    "tsx": "^4.23.15",
+    "typescript": "~5.9.3",
+    "vite": "^8.3.4",
+    "vitest": "^5.0.5"
+  }
+}

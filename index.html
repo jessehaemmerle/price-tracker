@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="de-AT">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Gspart! Vorarlberg</title>
+    <meta
+      name="description"
+      content="Spritpreise, Supermarkt- und Drogerie-Angebote, Heizöl, Pellets und Strompreise in Vorarlberg – mit Preisverlauf, Merkliste und Preisalarm."
+    />
+    <meta name="theme-color" content="#F6F8F9" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0E1418" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <script>
+      // Gespeichertes Farbschema vor dem ersten Rendern setzen (kein Aufblitzen).
+      try {
+        var t = localStorage.getItem('gspart.theme')
+        if (t === '"light"' || t === '"dark"') document.documentElement.dataset.theme = JSON.parse(t)
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>Diese Seite braucht JavaScript, um die aktuellen Preise zu laden.</noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

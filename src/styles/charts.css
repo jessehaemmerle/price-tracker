@@ -1,0 +1,183 @@
+.chart {
+  margin: 0;
+  display: grid;
+  gap: var(--space-2);
+}
+
+.chart__frame {
+  position: relative;
+  width: 100%;
+  touch-action: pan-y;
+}
+
+.chart__frame svg {
+  overflow: visible;
+}
+
+.chart__frame svg:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 4px;
+}
+
+.chart__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  font-size: var(--step--1);
+  color: var(--slate);
+}
+.chart__key {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.chart__swatch {
+  width: 14px;
+  height: 3px;
+  border-radius: 2px;
+}
+
+.chart__grid line {
+  stroke: var(--grid);
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+}
+.chart__grid text,
+.chart__xaxis text {
+  fill: var(--muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.chart__baseline {
+  stroke: var(--axis);
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+}
+.chart__endlabel {
+  fill: var(--granite);
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.chart__cross line,
+.chart__now line {
+  stroke: var(--granite);
+  stroke-width: 1;
+  opacity: 0.45;
+  shape-rendering: crispEdges;
+}
+.chart__divider line {
+  stroke: var(--axis);
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+}
+.chart__divider text {
+  fill: var(--slate);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.chart__bar {
+  fill: var(--seq-250);
+  transition: opacity 120ms ease;
+}
+.chart__bar--hi {
+  fill: var(--seq-550);
+}
+.chart__bar--active {
+  opacity: 0.75;
+}
+
+.chart__tooltip {
+  position: absolute;
+  top: 0;
+  transform: translate(-50%, -100%);
+  margin-top: -6px;
+  min-width: 140px;
+  padding: var(--space-2) var(--space-3);
+  background: var(--paper);
+  border: 1px solid var(--mist-strong);
+  border-radius: var(--radius-control);
+  box-shadow: 0 6px 18px rgb(14 20 24 / 0.12);
+  font-size: var(--step--1);
+  pointer-events: none;
+  z-index: 5;
+  white-space: nowrap;
+}
+.chart__tooltip-time {
+  color: var(--slate);
+  margin-bottom: 2px;
+}
+.chart__tooltip-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.chart__tooltip-row strong {
+  font-variant-numeric: tabular-nums;
+  color: var(--granite);
+}
+.chart__tooltip-row span:last-child:not(.chart__linekey) {
+  color: var(--slate);
+}
+.chart__linekey {
+  width: 12px;
+  height: 3px;
+  border-radius: 2px;
+  flex: none;
+}
+
+.chart__table summary {
+  cursor: pointer;
+  font-size: var(--step--1);
+  color: var(--slate);
+  width: fit-content;
+  padding: var(--space-1) 0;
+}
+.chart__table table {
+  margin-top: var(--space-2);
+}
+
+.table-scroll {
+  overflow-x: auto;
+  max-width: 100%;
+}
+.table-scroll table,
+.hours,
+.status-table {
+  border-collapse: collapse;
+  font-size: var(--step--1);
+  min-width: 100%;
+}
+.table-scroll th,
+.table-scroll td,
+.hours th,
+.hours td,
+.status-table th,
+.status-table td {
+  text-align: left;
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--mist);
+  vertical-align: top;
+}
+.table-scroll thead th,
+.status-table thead th {
+  color: var(--slate);
+  font-weight: 600;
+}
+.table-scroll .num {
+  text-align: right;
+}
+
+.sparkline {
+  margin-top: auto;
+}
+
+@media (forced-colors: active) {
+  .chart__bar {
+    fill: CanvasText;
+  }
+  .chart__bar--hi {
+    fill: Highlight;
+  }
+}
