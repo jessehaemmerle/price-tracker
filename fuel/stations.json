@@ -1,5 +1,5 @@
 {
-"updatedAt": "2026-10-16T08:59:08.497Z",
+"updatedAt": "2026-10-23T14:59:34.182Z",
 "stations": [
 {"id":1354868,"name":"OMV - Alberschwende Hof 978","address":"Hof 978","postalCode":"6861","city":"Alberschwende","district":"Bregenz","lat":47.45076,"lon":9.82779,"hours":{"MO":"06:00-22:00","DI":"06:00-22:00","MI":"06:00-22:00","DO":"06:00-22:00","FR":"06:00-22:00","SA":"06:00-22:00","SO":"06:00-22:00","FE":"06:00-22:00"}},
 {"id":4167,"name":"DISK","address":"Bauern 6","postalCode":"6844","city":"Altach","district":"Feldkirch","lat":47.35295,"lon":9.6616,"hours":{"MO":"06:00-22:00","DI":"06:00-22:00","MI":"06:00-22:00","DO":"06:00-22:00","FR":"06:00-22:00","SA":"06:00-22:00","SO":"06:00-22:00","FE":"06:00-22:00"}},
@@ -15,7 +15,7 @@
 {"id":449657,"name":"Shell Austria","address":"RHEINSTRASSE 88","postalCode":"6900","city":"BREGENZ","district":"Bregenz","lat":47.49363,"lon":9.71095,"hours":{"MO":"06:00-21:00","DI":"06:00-21:00","MI":"06:00-21:00","DO":"06:00-21:00","FR":"06:00-21:00","SA":"06:00-21:00","SO":"06:00-21:00","FE":"06:00-21:00"}},
 {"id":1474108,"name":"eni","address":"Rheinstrasse 20","postalCode":"6971","city":"Bregenz-Hard","district":"Bregenz","lat":47.488611,"lon":9.702186,"hours":{"MO":"24h","DI":"24h","MI":"24h","DO":"24h","FR":"24h","SA":"24h","SO":"24h","FE":"24h"}},
 {"id":1474106,"name":"eni","address":"Arlbergstrasse 56","postalCode":"6900","city":"Bregenz-Rieden","district":"Bregenz","lat":47.495268,"lon":9.733599,"hours":{"MO":"06:00-22:00","DI":"06:00-22:00","MI":"06:00-22:00","DO":"06:00-22:00","FR":"06:00-22:00","SA":"06:00-22:00","SO":"07:00-22:00","FE":"07:00-22:00"}},
-{"id":35735,"name":"BP","address":"Bregenzerstr. 63","postalCode":"6900","city":"Bregenz/Lochau","district":"Bregenz","lat":47.511151,"lon":9.753078,"hours":{"MO":"24h","DI":"24h","MI":"24h","DO":"24h","FR":"24h","SA":"24h","SO":"24h","FE":"24h"}},
+{"id":35735,"name":"BP","address":"Bregenzerstr. 63","postalCode":"6900","city":"Bregenz/Lochau","district":"Bregenz","lat":47.511151,"lon":9.753078,"hours":{"MO":"05:30-23:30","DI":"05:30-23:30","MI":"05:30-23:30","DO":"05:30-23:30","FR":"05:30-24:00","SA":"24h","SO":"00:00-23:30"}},
 {"id":1474470,"name":"Diskont Tankstelle","address":"Herrenau 2 (am HOFER Parkplatz)","postalCode":"6706","city":"Buers","district":"Bludenz","lat":47.15298,"lon":9.81419,"hours":{"MO":"24h","DI":"24h","MI":"24h","DO":"24h","FR":"24h","SA":"24h","SO":"24h","FE":"24h"}},
 {"id":1354748,"name":"JET TANKSTELLE","address":"HERRENAU 1","postalCode":"6706","city":"BUERS","district":"Bludenz","lat":47.152278,"lon":9.814175,"hours":{"MO":"05:00-23:30","DI":"05:00-23:30","MI":"05:00-23:30","DO":"05:00-23:30","FR":"05:00-23:30","SA":"05:00-23:30","SO":"05:00-23:30","FE":"05:00-23:30"}},
 {"id":1168600,"name":"LMEnergy Express","address":"Almteilweg 1","postalCode":"6706","city":"Bürs","district":"Bludenz","lat":47.151467,"lon":9.810635,"hours":{"MO":"07:00-20:00","DI":"07:00-20:00","MI":"07:00-20:00","DO":"07:00-20:00","FR":"07:00-20:00","SA":"07:00-19:00","SO":"00:00-00:00","FE":"00:00-00:00"}},
