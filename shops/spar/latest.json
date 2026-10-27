@@ -1,7 +1,7 @@
 {
 "store": "spar",
-"updatedAt": "2026-10-26T08:05:34.442Z",
-"day": 20752,
+"updatedAt": "2026-10-27T08:21:45.691Z",
+"day": 20753,
 "urlPrefix": "https://www.interspar.at/shop/lebensmittel",
 "imagePrefix": "https://cdn1.interspar.at/cachableservlets/articleImage.dam/at/",
 "fields": ["id","name","brand","category","quantity","price","regularPrice","unitPrice","baseUnit","promo","url","image","previousPrice","changedDay","minPrice","maxPrice","firstSeenDay"],
