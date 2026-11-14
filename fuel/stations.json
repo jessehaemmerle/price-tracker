@@ -1,5 +1,5 @@
 {
-"updatedAt": "2026-11-06T23:03:05.344Z",
+"updatedAt": "2026-11-14T03:07:46.368Z",
 "stations": [
 {"id":1354868,"name":"OMV - Alberschwende Hof 978","address":"Hof 978","postalCode":"6861","city":"Alberschwende","district":"Bregenz","lat":47.45076,"lon":9.82779,"hours":{"MO":"06:00-22:00","DI":"06:00-22:00","MI":"06:00-22:00","DO":"06:00-22:00","FR":"06:00-22:00","SA":"06:00-22:00","SO":"06:00-22:00","FE":"06:00-22:00"}},
 {"id":4167,"name":"DISK","address":"Bauern 6","postalCode":"6844","city":"Altach","district":"Feldkirch","lat":47.35295,"lon":9.6616,"hours":{"MO":"06:00-22:00","DI":"06:00-22:00","MI":"06:00-22:00","DO":"06:00-22:00","FR":"06:00-22:00","SA":"06:00-22:00","SO":"06:00-22:00","FE":"06:00-22:00"}},
