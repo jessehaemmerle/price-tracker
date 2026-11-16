@@ -5,28 +5,6 @@ import { mapDmProduct, type DmProduct } from '../scraper/sources/dm'
 import { mapRatedProduct, parseHeatingOil, parsePelletIndex, type RatedProduct } from '../scraper/sources/energy'
 import { queryPoints } from '../scraper/sources/fuel'
 import { decodeEntities, extractLdProducts, mapLdProduct } from '../scraper/sources/jsonld'
-import { mapSparHit } from '../scraper/sources/spar'
-
-describe('SPAR', () => {
-  it('bildet einen Treffer ab', () => {
-    const p = mapSparHit({
-      masterValues: {
-        'product-number': '2020003743085',
-        'short-description': 'Bio-Karotten gelb',
-        'short-description-3': '400 G',
-        price: 1.61,
-        'regular-price': 1.99,
-        'price-per-unit': '4.03 €/kg',
-        brand: ['SPAR Natur*pur'],
-        categories: ['F1-1_Frischgemüse:F1-1-4_Wurzelgemüse', 'root_Produkte:F1_Obst & Gemüse'],
-        url: '/spar-naturpur-bio-karotten-gelb/p/2020003743085',
-        'image-url': 'https://cdn1.interspar.at/x.jpg',
-      },
-    })!
-    expect(p).toMatchObject({ id: '2020003743085', price: 161, regularPrice: 199, unitPrice: 403, baseUnit: 'kg', category: 'Obst & Gemüse', promo: 'Aktion' })
-    expect(p.url).toBe('https://www.interspar.at/shop/lebensmittel/spar-naturpur-bio-karotten-gelb/p/2020003743085')
-  })
-})
 
 describe('BILLA', () => {
   const base: BillaProduct = {

@@ -10,5 +10,9 @@ export interface ShopSource {
   imagePrefix: string
   /** Weniger gültige Produkte gilt als Fehler (Schutz vor kaputten Läufen). */
   minCount: number
+  /** Erlaubter Rückgang gegenüber dem letzten Lauf (Standard 0,4). */
+  maxDropRatio?: number
+  /** Nur Wochenangebote: entfallene Artikel bekommen eine Lücke im Verlauf. */
+  offersOnly?: boolean
   fetch(log: Logger): Promise<RawProduct[]>
 }

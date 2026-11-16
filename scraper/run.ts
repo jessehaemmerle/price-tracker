@@ -2,7 +2,7 @@
  * Einstiegspunkt für alle Datenläufe.
  *
  *   tsx scraper/run.ts fuel
- *   tsx scraper/run.ts shops --only=spar,dm
+ *   tsx scraper/run.ts shops --only=billa,dm
  *   tsx scraper/run.ts energy
  *   tsx scraper/run.ts alerts
  *   tsx scraper/run.ts all --data=./data
@@ -39,10 +39,10 @@ import { dm } from './sources/dm'
 import { runHeatingOil, runPellets, runSpot, runTariffs } from './sources/energy'
 import { runFuel } from './sources/fuel'
 import { obi } from './sources/jsonld'
-import { spar } from './sources/spar'
+import { kaufland } from './sources/kaufland'
 import type { ShopSource } from './sources/types'
 
-const SHOP_SOURCES: ShopSource[] = [spar, billa, dm, bipa, obi]
+const SHOP_SOURCES: ShopSource[] = [billa, kaufland, dm, bipa, obi]
 
 const log = (msg: string) => console.log(`[${new Date().toISOString().slice(11, 19)}] ${msg}`)
 
@@ -120,7 +120,11 @@ async function shopTask(only: string[] | null): Promise<boolean> {
       const started = Date.now()
       const previous = await readJson<ShopLatestFile | null>(`shops/${source.id}/latest.json`, null)
       const raw = await source.fetch(log)
-      const { items, report } = validateProducts(raw, { minCount: source.minCount, previousCount: previous?.items.length })
+      const { items, report } = validateProducts(raw, {
+        minCount: source.minCount,
+        previousCount: previous?.items.length,
+        maxDropRatio: source.maxDropRatio,
+      })
       log(formatReport(source.id, report))
       const now = new Date()
       const day = dayNumber(now)
@@ -133,6 +137,7 @@ async function shopTask(only: string[] | null): Promise<boolean> {
         items,
         previous,
         buckets: await loadBuckets(source.id),
+        markRemoved: source.offersOnly,
       })
       pruneHistory(merged.buckets, day)
       await writeJson(`shops/${source.id}/latest.json`, merged.latest, { lines: true })
@@ -175,7 +180,8 @@ async function writeHighlights(): Promise<void> {
   const today = dayNumber()
   for (const store of TRACKED_STORES) {
     const file = await readJson<ShopLatestFile | null>(`shops/${store.id}/latest.json`, null)
-    if (!file) continue
+    // Veraltete Stände (Quelle seit Tagen ausgefallen) nicht als aktuelle Angebote zeigen.
+    if (!file || file.day < today - 3) continue
     highlights.prefixes[store.id] = { url: file.urlPrefix, image: file.imagePrefix }
     for (const item of file.items) {
       // Preissenkung innerhalb der letzten zwei Tage, mindestens 5 %
@@ -218,7 +224,7 @@ async function main(): Promise<void> {
   if (dir) setDataDir(dir)
   const only = flag('only')?.split(',') ?? null
   if (!tasks.length) {
-    console.error('Aufruf: tsx scraper/run.ts <fuel|shops|energy|alerts|all> [--only=spar,dm] [--data=./data]')
+    console.error('Aufruf: tsx scraper/run.ts <fuel|shops|energy|alerts|all> [--only=billa,dm] [--data=./data]')
     process.exit(2)
   }
   const want = (t: string) => tasks.includes(t) || tasks.includes('all')

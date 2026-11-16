@@ -15,9 +15,9 @@ const prod = (store: StoreId, id: string, name: string, price: number, unitPrice
 
 describe('Suche', () => {
   const list = [
-    prod('spar', '1', 'SPAR Vollmilch 3,5 % 1 l', 129, 129, 'l'),
+    prod('bipa', '1', 'Bio Vollmilch 3,5 % 1 l', 129, 129, 'l'),
     prod('billa', '2', 'Clever Vollmilch', 119, 119, 'l'),
-    prod('spar', '3', 'Milchschokolade Vollmilch Riegel', 99, 1980, 'kg'),
+    prod('bipa', '3', 'Milchschokolade Vollmilch Riegel', 99, 1980, 'kg'),
     prod('dm', '4', 'Zahnpasta Kräuter', 195),
   ]
   it('normalisiert Umlaute', () => {
@@ -36,19 +36,19 @@ describe('Suche', () => {
 
 describe('Warenkorb', () => {
   it('wählt pro Händler das günstigste passende Produkt nach Grundpreis', () => {
-    const spar = [prod('spar', 'a', 'Vollmilch 1 l', 129, 129, 'l'), prod('spar', 'b', 'Vollmilch 0,5 l', 79, 158, 'l')]
-    const cell = matchItem(newBasketItem('Vollmilch'), spar, 'spar')
+    const bipa = [prod('bipa', 'a', 'Vollmilch 1 l', 129, 129, 'l'), prod('bipa', 'b', 'Vollmilch 0,5 l', 79, 158, 'l')]
+    const cell = matchItem(newBasketItem('Vollmilch'), bipa, 'bipa')
     expect(cell.chosen?.id).toBe('a')
   })
   it('respektiert die eigene Wahl und summiert Mengen', () => {
-    const item = { ...newBasketItem('Vollmilch'), qty: 2, picks: { spar: 'b' } }
+    const item = { ...newBasketItem('Vollmilch'), qty: 2, picks: { bipa: 'b' } }
     const byStore = new Map<StoreId, Product[]>([
-      ['spar', [prod('spar', 'a', 'Vollmilch 1 l', 129, 129, 'l'), prod('spar', 'b', 'Vollmilch 0,5 l', 79, 158, 'l')]],
+      ['bipa', [prod('bipa', 'a', 'Vollmilch 1 l', 129, 129, 'l'), prod('bipa', 'b', 'Vollmilch 0,5 l', 79, 158, 'l')]],
       ['billa', [prod('billa', 'c', 'Clever Vollmilch', 119, 119, 'l')]],
       ['dm', []],
     ])
     const { totals } = compareBasket([item], byStore)
-    expect(totals[0]).toEqual({ store: 'spar', total: 158, found: 1 })
+    expect(totals[0]).toEqual({ store: 'bipa', total: 158, found: 1 })
     expect(totals.find((t) => t.store === 'billa')?.total).toBe(238)
     expect(totals.find((t) => t.store === 'dm')?.found).toBe(0)
   })

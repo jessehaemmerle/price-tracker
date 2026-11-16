@@ -14,6 +14,8 @@ export default defineConfig({
     locale: 'de-AT',
     timezoneId: 'Europe/Vienna',
     trace: 'retain-on-failure',
+    // Optional: vorhandenen Chromium nutzen, wenn die passende Playwright-Version nicht installiert ist.
+    launchOptions: process.env.PW_CHROMIUM_PATH ? { executablePath: process.env.PW_CHROMIUM_PATH } : {},
   },
   projects: [
     { name: 'desktop', use: { ...devices['Desktop Chrome'] } },

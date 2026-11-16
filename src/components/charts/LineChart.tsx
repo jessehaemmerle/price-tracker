@@ -41,11 +41,11 @@ function valueAt(points: [number, number][], t: number, step: boolean): [number,
       if (p[0] <= t) found = p
       else break
     }
-    return found ? [t, found[1]] : null
+    return found && Number.isFinite(found[1]) ? [t, found[1]] : null
   }
   let best = points[0]
   for (const p of points) if (Math.abs(p[0] - t) < Math.abs(best[0] - t)) best = p
-  return best
+  return Number.isFinite(best[1]) ? best : null
 }
 
 export function LineChart({
@@ -75,7 +75,9 @@ export function LineChart({
       x0 -= 3600_000
       x1 += 3600_000
     }
-    const ys = all.filter((p) => p[0] >= x0).map((p) => p[1])
+    // NaN markiert eine Lücke (kein Wert in diesem Zeitraum) und zählt nicht zur Skala.
+    const ys = all.filter((p) => p[0] >= x0 && Number.isFinite(p[1])).map((p) => p[1])
+    if (!ys.length) return null
     let y0 = Math.min(...ys)
     let y1 = Math.max(...ys)
     const pad = (y1 - y0) * 0.12 || Math.abs(y1) * 0.02 || 1
@@ -103,17 +105,36 @@ export function LineChart({
       const pts = step ? s.points : s.points.filter((p) => p[0] >= geo.x0)
       if (!pts.length) return []
       let d = ''
-      pts.forEach((p, i) => {
+      let pen = false
+      let gaps = false
+      let last: [number, number] | null = null
+      let firstX = 0
+      let endX = 0
+      for (const p of pts) {
         const x = Math.max(geo.sx(p[0]), M.left)
+        if (!Number.isFinite(p[1])) {
+          // Lücke: Treppe bis hierher ziehen, dann den Stift absetzen
+          if (pen && step) d += `H${x}`
+          if (pen) endX = step ? x : endX
+          pen = false
+          gaps = true
+          continue
+        }
         const y = geo.sy(p[1])
-        if (i === 0) d += `M${x},${y}`
+        if (!pen) d += `M${x},${y}`
         else if (step) d += `H${x}V${y}`
         else d += `L${x},${y}`
-      })
-      const last = pts[pts.length - 1]
-      if (step && last && geo.x1 > last[0]) d += `H${geo.sx(geo.x1)}`
-      const endX = step ? geo.sx(geo.x1) : geo.sx(last[0])
-      return [{ s, d, endX, endY: geo.sy(last[1]), last: last[1], firstX: Math.max(geo.sx(pts[0][0]), M.left) }]
+        if (!last) firstX = x
+        pen = true
+        last = p
+        endX = x
+      }
+      if (!last) return []
+      if (step && pen && geo.x1 > last[0]) {
+        d += `H${geo.sx(geo.x1)}`
+        endX = geo.sx(geo.x1)
+      }
+      return [{ s, d, endX, endY: geo.sy(last[1]), last: last[1], firstX, gaps }]
     })
   }, [geo, visible, step])
 
@@ -195,6 +216,7 @@ export function LineChart({
             </g>
             {area &&
               paths.length === 1 &&
+              !paths[0].gaps &&
               paths.map(({ s, d, firstX }) => (
                 <path key={`a-${s.id}`} d={`${d}V${height - M.bottom}H${firstX}Z`} fill={s.color} opacity={0.1} />
               ))}
@@ -297,7 +319,7 @@ function ChartTable({
                   <th scope="row">{xFormat(r.t)}</th>
                   {r.values.map((v, i) => (
                     <td key={series[i].id} className="tabular">
-                      {v === undefined ? '–' : yFormat(v)}
+                      {v === undefined || !Number.isFinite(v) ? '–' : yFormat(v)}
                     </td>
                   ))}
                 </tr>

@@ -71,7 +71,11 @@ export default function About() {
             const info = index.data?.stores.find((x) => x.id === s.id)
             return (
               <li key={s.id}>
-                <strong>{s.name}</strong>: {s.coverage === 'voll' ? 'gesamtes Online-Sortiment' : 'Auswahl über Sortiments-Suchbegriffe'}
+                <strong>{s.name}</strong>: {s.coverage === 'voll'
+                  ? 'gesamtes Online-Sortiment'
+                  : s.coverage === 'angebote'
+                    ? 'nur die Wochenangebote der Filiale Lindau (Deutschland), ohne Gesamtsortiment'
+                    : 'Auswahl über Sortiments-Suchbegriffe'}
                 {info ? `, derzeit ${info.count.toLocaleString('de-AT')} Produkte` : ''}
               </li>
             )

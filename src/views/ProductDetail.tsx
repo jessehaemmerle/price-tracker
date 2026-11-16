@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router'
-import { storeName, TRACKED_STORES } from '../../shared/stores'
+import { isOffersOnly, storeName, TRACKED_STORES } from '../../shared/stores'
 import { dayToDate, type PricePoint, type StoreId } from '../../shared/types'
 import { LineChart } from '../components/charts/LineChart'
 import { IconExternal, IconPlus } from '../components/Icons'
@@ -43,7 +43,7 @@ export default function ProductDetail() {
   if (!product) {
     return (
       <div className="page">
-        <Empty level={1} title="Dieses Produkt ist derzeit nicht im Online-Sortiment." action={<Link to="/einkaufen">Zur Produktsuche</Link>}>
+        <Empty level={1} title={isOffersOnly(store) ? 'Dieses Produkt ist derzeit nicht im Angebot.' : 'Dieses Produkt ist derzeit nicht im Online-Sortiment.'} action={<Link to="/einkaufen">Zur Produktsuche</Link>}>
           Es wurde vielleicht ausgelistet oder ist vorübergehend nicht verfügbar.
         </Empty>
       </div>
@@ -56,7 +56,8 @@ export default function ProductDetail() {
           id: 'preis',
           label: 'Preis',
           color: 'var(--series-die)',
-          points: history.map((p) => [dayToDate(p[0]).getTime(), p[1] / 100] as [number, number]),
+          // Preis 0 = nicht gelistet → Lücke im Diagramm
+          points: history.map((p) => [dayToDate(p[0]).getTime(), p[1] > 0 ? p[1] / 100 : Number.NaN] as [number, number]),
         },
       ]
     : []
@@ -138,7 +139,14 @@ export default function ProductDetail() {
       <section className="section" aria-labelledby="p-history">
         <div className="section__head">
           <h2 id="p-history">Preisverlauf</h2>
-          {promoDays > 0 && <p>Davon {promoDays} Preisänderungen im Rahmen von Aktionen.</p>}
+          {isOffersOnly(store) ? (
+            <p>
+              Von {storeName(store)} liegen nur Angebotspreise vor. Lücken im Verlauf sind Zeiten ohne Angebot, in denen der Normalpreis
+              gilt.
+            </p>
+          ) : (
+            promoDays > 0 && <p>Davon {promoDays} Preisänderungen im Rahmen von Aktionen.</p>
+          )}
         </div>
         {history === null ? (
           <Loading />

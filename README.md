@@ -11,8 +11,8 @@ dazu Börsenstrom, Heizöl, Pellets sowie Strom- und Gastarife. Mit Preisverlauf
 | Bereich | Quelle | Häufigkeit | Umfang |
 |---|---|---|---|
 | Diesel, Super 95, CNG | [E-Control Spritpreisrechner](https://www.e-control.at/spritpreisrechner) (offizielle API) | stündlich | alle ca. 107 Tankstellen in Vorarlberg |
-| SPAR | Online-Shop-Suche | täglich | gesamtes Online-Sortiment (ca. 22.000) |
 | BILLA | Online-Shop | täglich | gesamtes Online-Sortiment (ca. 12.000) |
+| Kaufland Lindau (DE) | Angebotsseite der Filiale | täglich | nur Wochenangebote (ca. 400–550), kein Gesamtsortiment |
 | dm | Produktsuche | täglich | gesamtes Online-Sortiment (ca. 18.000) |
 | BIPA | Online-Shop | täglich | gesamtes Online-Sortiment (ca. 18.500) |
 | OBI | Suchseiten (schema.org) | täglich | Auswahl über ca. 50 Baumarkt-Suchbegriffe |
@@ -21,7 +21,7 @@ dazu Börsenstrom, Heizöl, Pellets sowie Strom- und Gastarife. Mit Preisverlauf
 | Pellets | [proPellets Austria](https://www.propellets.at/aktuelle-pelletpreise), Index PPI06 | 5× täglich (Werte monatlich) | seit 2006 |
 | Strom- und Gastarife | [E-Control Tarifkalkulator](https://www.e-control.at/tarifkalkulator) | 5× täglich | alle Tarife für PLZ 6850 bei 3 Verbrauchsstufen |
 
-**Nur verlinkt** (keine automatisch abrufbaren Preise, Bot-Schutz oder kein Online-Shop): HOFER, Lidl, PENNY, MPREIS,
+**Nur verlinkt** (keine automatisch abrufbaren Preise, Bot-Schutz oder kein Online-Shop): SPAR (Suchschnittstelle im Oktober 2026 abgeschaltet, Produktwelt gesperrt), HOFER, Lidl, PENNY, MPREIS,
 Sutterlüty, Müller, MediaMarkt, Hartlauer, Expert, EP:, HORNBACH. Der Bereich „Flugblätter“ verlinkt deren Angebote.
 
 Wichtige Grenzen:
@@ -73,7 +73,7 @@ Ab dann läuft alles von selbst: Sprit stündlich, Energie fünfmal täglich, H�
   "rules": [
     { "id": "diesel", "type": "fuel", "fuel": "DIE", "below": 1.55, "districts": ["Dornbirn"] },
     { "id": "tankstelle-x", "type": "fuel", "fuel": "SUP", "below": 1.6, "stations": [1354948] },
-    { "id": "kaffee", "type": "product", "store": "spar", "product": "2020003743085", "below": 9.99 },
+    { "id": "kaffee", "type": "product", "store": "billa", "product": "00-10042", "below": 9.99 },
     { "id": "strom", "type": "spot", "belowCt": 3 },
     { "id": "heizoel", "type": "heatingoil", "below": 95 }
   ]
@@ -88,7 +88,7 @@ Gemeldet wird beim ersten Unterschreiten, danach erst wieder, wenn der Preis wei
 npm install
 npm run scrape:fuel          # Spritpreise nach ./data holen
 npm run scrape:energy        # Energie
-npm run scrape -- shops --only=spar,billa   # einzelne Händler
+npm run scrape -- shops --only=billa,dm   # einzelne Händler
 npm run dev                  # http://localhost:5173 – liest ./data
 npm test                     # Unit-Tests
 npm run test:e2e             # Browser-Tests mit Testdaten aus tests/fixtures

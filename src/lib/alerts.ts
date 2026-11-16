@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { FUEL_LABELS, type FuelLatestFile, type FuelStationsFile, type StoreId } from '../../shared/types'
-import { storeName } from '../../shared/stores'
+import { isOffersOnly, storeName } from '../../shared/stores'
 import { loadJson, loadProducts, type Product } from './data'
 import { decimal, euro } from './format'
 import { readStored, writeStored } from './storage'
@@ -45,7 +45,7 @@ async function computeStatuses(items: WatchItem[]): Promise<WatchStatus[]> {
         item,
         current,
         product: p,
-        detail: p ? `${euro(p.price)} bei ${storeName(item.store)}` : 'Derzeit nicht im Online-Sortiment',
+        detail: p ? `${euro(p.price)} bei ${storeName(item.store)}` : isOffersOnly(item.store) ? 'Derzeit nicht im Angebot' : 'Derzeit nicht im Online-Sortiment',
         triggered: current !== null && item.below !== undefined && current <= item.below,
       }
     }

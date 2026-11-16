@@ -6,7 +6,7 @@ import { IconExternal, IconSearch } from '../components/Icons'
 import { ProductRow } from '../components/ProductRow'
 import { Empty, ErrorNote, Freshness, Loading } from '../components/States'
 import { useProducts, useShopIndex } from '../lib/data'
-import { count } from '../lib/format'
+import { count, longDate } from '../lib/format'
 import { discount, searchProducts, type SortKey } from '../lib/search'
 import { useStoredState } from '../lib/storage'
 import { useBasket } from './basketState'
@@ -105,7 +105,7 @@ function Search() {
         </div>
       ) : results.length === 0 && !loading ? (
         <Empty title={`Nichts gefunden für „${deferred}“.`}>
-          Versuch einen allgemeineren Begriff oder wähle weitere Händler aus. HOFER, Lidl, PENNY und Müller haben keine abrufbaren
+          Versuch einen allgemeineren Begriff oder wähle weitere Händler aus. SPAR, HOFER, Lidl, PENNY und Müller haben keine abrufbaren
           Online-Preise, ihre Angebote findest du unter „Flugblätter“.
         </Empty>
       ) : (
@@ -228,16 +228,18 @@ export default function Shops() {
       <header className="view-head">
         <h1>Einkaufen</h1>
         <p>
-          Online-Preise von {TRACKED_STORES.map((s) => s.name).join(', ')}. Täglich aktualisiert, mit Verlauf jedes Produkts. Bei OBI wird
-          eine Auswahl über Sortiments-Suchbegriffe erfasst.
+          Online-Preise von {TRACKED_STORES.filter((s) => s.coverage !== 'angebote').map((s) => s.name).join(', ')} sowie die
+          Wochenangebote von Kaufland in Lindau (Deutschland). Täglich aktualisiert, mit Verlauf jedes Produkts. Bei OBI wird eine Auswahl
+          über Sortiments-Suchbegriffe erfasst.
         </p>
         <Freshness iso={index.data?.updatedAt} />
       </header>
       {index.error && <ErrorNote error={index.error} what="Händlerpreise" />}
       {stale.length > 0 && (
         <p className="notice">
-          Letzte Aktualisierung fehlgeschlagen bei {stale.map((s) => s.name).join(', ')}. Es werden die Preise vom letzten erfolgreichen
-          Lauf angezeigt.
+          Letzte Aktualisierung fehlgeschlagen bei{' '}
+          {stale.map((s) => `${s.name}${s.updatedAt ? ` (Preise vom ${longDate(s.updatedAt)})` : ''}`).join(', ')}. Diese Preise können
+          inzwischen überholt sein.
         </p>
       )}
       <nav className="tabs" aria-label="Bereiche">
