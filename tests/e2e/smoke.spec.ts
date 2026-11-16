@@ -85,3 +85,12 @@ test('Diagramme sind per Tastatur bedienbar', async ({ page }) => {
   await page.keyboard.press('ArrowRight')
   await expect(page.locator('.chart__tooltip').first()).toBeVisible()
 })
+
+test('Kaufland Lindau erscheint in der Suche und zeigt den Angebotshinweis', async ({ page }) => {
+  await page.goto('/#/einkaufen/aktionen')
+  await expect(page.getByRole('button', { name: /Kaufland Lindau/ })).toBeVisible()
+  const row = page.locator('.product-row', { has: page.locator('.store-tag', { hasText: 'Kaufland Lindau' }) }).first()
+  await expect(row).toBeVisible()
+  await row.locator('.product-row__name').click()
+  await expect(page.getByText(/liegen nur Angebotspreise vor/)).toBeVisible()
+})
