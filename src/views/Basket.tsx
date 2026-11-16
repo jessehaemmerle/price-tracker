@@ -192,7 +192,7 @@ export default function Basket() {
             </table>
           </div>
           <p className="note">
-            Online-Preise, im Geschäft kann es abweichen. Von Kaufland Lindau liegen nur die Wochenangebote vor, dort fehlt deshalb meist ein Teil der Liste. HOFER, Lidl, PENNY und Müller sind nicht enthalten, weil sie keine abrufbaren
+            Online-Preise, im Geschäft kann es abweichen. Von Kaufland Lindau liegen nur die Wochenangebote vor, dort fehlt deshalb meist ein Teil der Liste. SPAR, HOFER, Lidl, PENNY und Müller sind nicht enthalten, weil sie keine abrufbaren
             Preise anbieten.
           </p>
           <button type="button" className="button button--quiet" onClick={basket.clear}>

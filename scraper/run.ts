@@ -2,7 +2,7 @@
  * Einstiegspunkt für alle Datenläufe.
  *
  *   tsx scraper/run.ts fuel
- *   tsx scraper/run.ts shops --only=spar,dm
+ *   tsx scraper/run.ts shops --only=billa,dm
  *   tsx scraper/run.ts energy
  *   tsx scraper/run.ts alerts
  *   tsx scraper/run.ts all --data=./data
@@ -40,10 +40,9 @@ import { runHeatingOil, runPellets, runSpot, runTariffs } from './sources/energy
 import { runFuel } from './sources/fuel'
 import { obi } from './sources/jsonld'
 import { kaufland } from './sources/kaufland'
-import { spar } from './sources/spar'
 import type { ShopSource } from './sources/types'
 
-const SHOP_SOURCES: ShopSource[] = [spar, billa, kaufland, dm, bipa, obi]
+const SHOP_SOURCES: ShopSource[] = [billa, kaufland, dm, bipa, obi]
 
 const log = (msg: string) => console.log(`[${new Date().toISOString().slice(11, 19)}] ${msg}`)
 
@@ -225,7 +224,7 @@ async function main(): Promise<void> {
   if (dir) setDataDir(dir)
   const only = flag('only')?.split(',') ?? null
   if (!tasks.length) {
-    console.error('Aufruf: tsx scraper/run.ts <fuel|shops|energy|alerts|all> [--only=spar,dm] [--data=./data]')
+    console.error('Aufruf: tsx scraper/run.ts <fuel|shops|energy|alerts|all> [--only=billa,dm] [--data=./data]')
     process.exit(2)
   }
   const want = (t: string) => tasks.includes(t) || tasks.includes('all')

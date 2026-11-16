@@ -37,7 +37,7 @@ describe('validateProducts', () => {
 })
 
 describe('mergeShopSnapshot', () => {
-  const base = { store: 'spar' as const, now: '2026-10-16T00:00:00Z', urlPrefix: 'https://shop.example/p/', imagePrefix: 'https://img.example/' }
+  const base = { store: 'billa' as const, now: '2026-10-16T00:00:00Z', urlPrefix: 'https://shop.example/p/', imagePrefix: 'https://img.example/' }
 
   it('legt neue Produkte mit Historie an und kürzt URLs', () => {
     const r = mergeShopSnapshot({ ...base, day: 100, items: [product('a', 199)], previous: null, buckets: [] })

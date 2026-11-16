@@ -10,7 +10,6 @@ export interface TrackedStore {
 
 /** Händler, deren Online-Preise automatisch erfasst werden. */
 export const TRACKED_STORES: TrackedStore[] = [
-  { id: 'spar', name: 'SPAR', category: 'lebensmittel', coverage: 'voll', offersUrl: 'https://www.spar.at/angebote' },
   { id: 'billa', name: 'BILLA', category: 'lebensmittel', coverage: 'voll', offersUrl: 'https://shop.billa.at/aktionen' },
   {
     id: 'kaufland',
@@ -36,6 +35,12 @@ export interface LinkedStore {
  * Online-Shop). Für sie gibt es nur einen Link zum aktuellen Flugblatt.
  */
 export const LINKED_STORES: LinkedStore[] = [
+  {
+    name: 'SPAR',
+    category: 'lebensmittel',
+    url: 'https://www.spar.at/produktwelt/',
+    note: 'Produktwelt mit Preisen und Angeboten (automatischer Abruf gesperrt)',
+  },
   { name: 'HOFER', category: 'lebensmittel', url: 'https://www.hofer.at/de/angebote.html', note: 'Wochenangebote' },
   { name: 'Lidl', category: 'lebensmittel', url: 'https://www.lidl.at/', note: 'Angebote und Flugblatt' },
   { name: 'PENNY', category: 'lebensmittel', url: 'https://www.penny.at/angebote', note: 'Wochenangebote' },

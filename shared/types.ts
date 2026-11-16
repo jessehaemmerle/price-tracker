@@ -59,7 +59,7 @@ export interface FuelHistoryFile {
   stats: Partial<Record<FuelType, FuelStatPoint[]>>
 }
 
-export type StoreId = 'spar' | 'billa' | 'kaufland' | 'dm' | 'bipa' | 'obi'
+export type StoreId = 'billa' | 'kaufland' | 'dm' | 'bipa' | 'obi'
 
 export type StoreCategory = 'lebensmittel' | 'drogerie' | 'baumarkt'
 

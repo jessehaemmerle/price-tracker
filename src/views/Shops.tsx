@@ -105,7 +105,7 @@ function Search() {
         </div>
       ) : results.length === 0 && !loading ? (
         <Empty title={`Nichts gefunden für „${deferred}“.`}>
-          Versuch einen allgemeineren Begriff oder wähle weitere Händler aus. HOFER, Lidl, PENNY und Müller haben keine abrufbaren
+          Versuch einen allgemeineren Begriff oder wähle weitere Händler aus. SPAR, HOFER, Lidl, PENNY und Müller haben keine abrufbaren
           Online-Preise, ihre Angebote findest du unter „Flugblätter“.
         </Empty>
       ) : (
