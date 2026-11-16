@@ -59,7 +59,7 @@ export interface FuelHistoryFile {
   stats: Partial<Record<FuelType, FuelStatPoint[]>>
 }
 
-export type StoreId = 'spar' | 'billa' | 'dm' | 'bipa' | 'obi'
+export type StoreId = 'spar' | 'billa' | 'kaufland' | 'dm' | 'bipa' | 'obi'
 
 export type StoreCategory = 'lebensmittel' | 'drogerie' | 'baumarkt'
 
@@ -68,7 +68,8 @@ export interface StoreInfo {
   name: string
   category: StoreCategory
   /** Vollständiges Online-Sortiment oder eine Auswahl über Suchbegriffe. */
-  coverage: 'voll' | 'auswahl'
+  /** voll = Gesamtsortiment, auswahl = Suchbegriffe, angebote = nur Wochenangebote einer Filiale */
+  coverage: 'voll' | 'auswahl' | 'angebote'
   count: number
   updatedAt: string | null
   /** Letzter Lauf fehlgeschlagen – Daten stammen vom letzten erfolgreichen Lauf. */
@@ -145,7 +146,7 @@ export interface HighlightsFile {
   deals: { store: StoreId; item: ProductTuple }[]
 }
 
-/** [Tag, Preis in Cent, 1 = Aktion] */
+/** [Tag, Preis in Cent, 1 = Aktion]. Preis 0 = ab diesem Tag nicht gelistet (bei Angebots-Händlern: Angebot beendet). */
 export type PricePoint = [DayNumber, number, 0 | 1]
 
 /** Preisverlauf, aufgeteilt in Buckets, damit das Frontend nur einen kleinen Teil laden muss. */

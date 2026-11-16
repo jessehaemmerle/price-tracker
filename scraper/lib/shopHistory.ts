@@ -19,6 +19,8 @@ export interface MergeInput {
   items: RawProduct[]
   previous: ShopLatestFile | null
   buckets: ShopHistoryBucket[]
+  /** Entfallene Artikel im Verlauf als Lücke (Preis 0) markieren – für Händler, von denen nur Angebote vorliegen. */
+  markRemoved?: boolean
 }
 
 export interface MergeResult {
@@ -55,6 +57,8 @@ export function mergeShopSnapshot(input: MergeInput): MergeResult {
     const promoFlag: 0 | 1 = p.regularPrice || p.promo ? 1 : 0
     const bucket = buckets[historyBucket(p.id)]
     const hist = (bucket[p.id] ??= [])
+    const earlier = hist.filter((h) => h[1] > 0).map((h) => h[1])
+    const firstKnownDay = hist.find((h) => h[1] > 0)?.[0]
     const lastPoint = hist[hist.length - 1]
     if (!lastPoint || lastPoint[1] !== p.price || lastPoint[2] !== promoFlag) {
       if (lastPoint && lastPoint[0] === day) hist[hist.length - 1] = [day, p.price, promoFlag]
@@ -80,6 +84,12 @@ export function mergeShopSnapshot(input: MergeInput): MergeResult {
       }
     } else {
       added++
+      // Artikel war schon einmal gelistet: Kennzahlen aus dem Verlauf wiederherstellen.
+      if (earlier.length && firstKnownDay !== undefined) {
+        firstSeenDay = Math.min(firstKnownDay, day)
+        minPrice = Math.min(p.price, ...earlier)
+        maxPrice = Math.max(p.price, ...earlier)
+      }
     }
 
     tuples.push([
@@ -104,7 +114,14 @@ export function mergeShopSnapshot(input: MergeInput): MergeResult {
   }
 
   const currentIds = new Set(items.map((p) => p.id))
-  const removed = [...prevById.keys()].filter((id) => !currentIds.has(id)).length
+  const removedIds = [...prevById.keys()].filter((id) => !currentIds.has(id))
+  const removed = removedIds.length
+  if (input.markRemoved) {
+    for (const id of removedIds) {
+      const hist = buckets[historyBucket(id)][id]
+      if (hist?.length && hist[hist.length - 1][1] !== 0) hist.push([day, 0, 0])
+    }
+  }
 
   tuples.sort((a, b) => a[1].localeCompare(b[1], 'de'))
 

@@ -4,7 +4,7 @@ export interface TrackedStore {
   id: StoreId
   name: string
   category: StoreCategory
-  coverage: 'voll' | 'auswahl'
+  coverage: 'voll' | 'auswahl' | 'angebote'
   offersUrl: string
 }
 
@@ -12,6 +12,13 @@ export interface TrackedStore {
 export const TRACKED_STORES: TrackedStore[] = [
   { id: 'spar', name: 'SPAR', category: 'lebensmittel', coverage: 'voll', offersUrl: 'https://www.spar.at/angebote' },
   { id: 'billa', name: 'BILLA', category: 'lebensmittel', coverage: 'voll', offersUrl: 'https://shop.billa.at/aktionen' },
+  {
+    id: 'kaufland',
+    name: 'Kaufland Lindau',
+    category: 'lebensmittel',
+    coverage: 'angebote',
+    offersUrl: 'https://filiale.kaufland.de/angebote/uebersicht.html',
+  },
   { id: 'dm', name: 'dm', category: 'drogerie', coverage: 'voll', offersUrl: 'https://www.dm.at/angebote' },
   { id: 'bipa', name: 'BIPA', category: 'drogerie', coverage: 'voll', offersUrl: 'https://www.bipa.at/' },
   { id: 'obi', name: 'OBI', category: 'baumarkt', coverage: 'auswahl', offersUrl: 'https://www.obi.at/angebote' },
@@ -67,4 +74,9 @@ export const CATEGORY_LABELS: Record<StoreCategory | 'elektronik', string> = {
 
 export function storeName(id: StoreId): string {
   return TRACKED_STORES.find((s) => s.id === id)?.name ?? id
+}
+
+/** Händler, von denen nur Wochenangebote vorliegen (kein Gesamtsortiment). */
+export function isOffersOnly(id: StoreId): boolean {
+  return TRACKED_STORES.find((s) => s.id === id)?.coverage === 'angebote'
 }

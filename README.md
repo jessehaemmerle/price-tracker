@@ -13,6 +13,7 @@ dazu Börsenstrom, Heizöl, Pellets sowie Strom- und Gastarife. Mit Preisverlauf
 | Diesel, Super 95, CNG | [E-Control Spritpreisrechner](https://www.e-control.at/spritpreisrechner) (offizielle API) | stündlich | alle ca. 107 Tankstellen in Vorarlberg |
 | SPAR | Online-Shop-Suche | täglich | gesamtes Online-Sortiment (ca. 22.000) |
 | BILLA | Online-Shop | täglich | gesamtes Online-Sortiment (ca. 12.000) |
+| Kaufland Lindau (DE) | Angebotsseite der Filiale | täglich | nur Wochenangebote (ca. 400–550), kein Gesamtsortiment |
 | dm | Produktsuche | täglich | gesamtes Online-Sortiment (ca. 18.000) |
 | BIPA | Online-Shop | täglich | gesamtes Online-Sortiment (ca. 18.500) |
 | OBI | Suchseiten (schema.org) | täglich | Auswahl über ca. 50 Baumarkt-Suchbegriffe |
