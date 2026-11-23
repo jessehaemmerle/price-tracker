@@ -21,7 +21,8 @@ jobs:
       - run: npm run build
 
   browser:
-    runs-on: ubuntu-latest
+    # Playwright 1.56 kann seine Browser auf ubuntu-latest (26.04) noch nicht installieren.
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
