@@ -1,7 +1,7 @@
 {
 "store": "dm",
-"updatedAt": "2026-11-26T12:03:45.780Z",
-"day": 20783,
+"updatedAt": "2026-11-27T11:26:54.841Z",
+"day": 20784,
 "urlPrefix": "https://www.dm.at/p/",
 "imagePrefix": "https://products.dm-static.com/images/f_auto,q_auto,c_fit,h_320,w_320/",
 "fields": ["id","name","brand","category","quantity","price","regularPrice","unitPrice","baseUnit","promo","url","image","previousPrice","changedDay","minPrice","maxPrice","firstSeenDay"],
